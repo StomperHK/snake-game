@@ -58,6 +58,6 @@ function changeSnakeDirection(event) {
     directionY = 0
   }
 }
-// setInterval(moveSnake, 150)
+setInterval(moveSnake, 150)
 
 document.addEventListener("keydown", changeSnakeDirection)
