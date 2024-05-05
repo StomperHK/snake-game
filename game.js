@@ -1,6 +1,6 @@
 const canvasEL = document.querySelector('[data-js="canvas"]')
 const canvasContext = canvasEL.getContext("2d")
-const pixelSize = 20
+const pixelSize = 15
 
 let snakePositions = [{x:3, y: 5}, {x:2, y: 5}, {x:1, y: 5}]
 let directionX = 1
@@ -8,34 +8,19 @@ let directionY = 0
 
 
 function moveSnake() {
-  let previousSnakePartPosition = {}
+  const snakeHead = {...snakePositions[0]}
+  const snakeTail = snakePositions[snakePositions.length -1]
 
-  canvasContext.fillStyle = "yellow"
+  snakePositions.unshift({x: snakeHead.x + directionX, y: snakeHead.y + directionY})   // push snake 1 pixel forward
 
-  snakePositions.forEach((snakePartPosition, snakePartIndex) => {
-    const snakePartIsTheHead = !snakePartIndex
-
-    if (snakePartIsTheHead) {
-      previousSnakePartPosition = {...snakePartPosition}
-
-      snakePartPosition.x += directionX
-      snakePartPosition.y += directionY
-    }
-    else {
-      const temporaryVariable = {...snakePartPosition}
-
-      snakePartPosition.x = previousSnakePartPosition.x
-      snakePartPosition.y = previousSnakePartPosition.y
-
-      previousSnakePartPosition = temporaryVariable
-    }
-
-    ({x, y} = snakePartPosition)
-
-    canvasContext.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize)
+  snakePositions.forEach(({x, y}) => {
+    canvasContext.fillStyle = "yellow"
+    canvasContext.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize)  // paint whole snake
   })
 
-  canvasContext.clearRect(previousSnakePartPosition.x * pixelSize, previousSnakePartPosition.y * pixelSize, pixelSize, pixelSize)
+  canvasContext.clearRect(snakeTail.x * pixelSize, snakeTail.y * pixelSize, pixelSize, pixelSize)   // remove snake tail from canvas
+
+  snakePositions.pop()  // remove tail 
 }
 
 function changeSnakeDirection(event) {
@@ -58,6 +43,6 @@ function changeSnakeDirection(event) {
     directionY = 0
   }
 }
-setInterval(moveSnake, 150)
+setInterval(moveSnake, 100)
 
 document.addEventListener("keydown", changeSnakeDirection)
