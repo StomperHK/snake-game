@@ -1,0 +1,33 @@
+* {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  box-sizing: border-box;
+  color: var(--content-color);
+}
+
+:root {
+  --bg-color: rgb(25, 18, 45);
+  --canvas-color: rgb(37, 40, 72);
+  --main-color: yellow;
+  --food-color: ;
+  --content-color: white;
+}
+
+body {
+  background-color: var(--bg-color);
+}
+
+h1 {
+  margin-top: 20px;
+  text-align: center;
+}
+
+canvas {
+  display: block;
+  margin: 30px auto;
+  border: 3px solid var(--content-color);
+  box-sizing: content-box;
+  border-radius: 4px;
+  background-color: var(--canvas-color);
+}
