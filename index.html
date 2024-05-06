@@ -3,16 +3,22 @@
   <head>
     <title>Rafael's Snake Game</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    
     <meta charset="utf-8">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Red+Hat+Display:wght@300..900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="./index.css">
   </head>
 
   <body>
     <h1>SNAKE GAME</h1>
-
-    <canvas data-js="canvas" width="495" height="300" role="presentation"></canvas>
+    
+    <div class="canvas-wrapper">
+      <span data-js="score-placeholder" class="score-placeholder">0</span>
+      <canvas data-js="canvas" width="480" height="300" role="presentation"></canvas>
+    </div>
 
     <script src="game.js" defer></script>
   </body>
