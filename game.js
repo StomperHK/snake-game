@@ -21,20 +21,6 @@ function updateSnakeDirection() {
   directionY = nextDirection.y
 }
 
-function snakeShouldDie(headPosition) {
-  if (headPosition.x === -1 || headPosition.y === -1) {   // snake hitted the top or the left of the canvas
-    return true
-  }
-
-  else if (headPosition.x === gameMaxNumberOfColumns || headPosition.y === gameMaxNumberOfRows) {   // snake hitted the right or the bottom of the canvas
-    return true
-  }
-
-  const snakePositionsWithoutHead = snakePositions.slice(1)
-  const snakeHittedItself = snakePositionsWithoutHead.some(({x, y}) => headPosition.x === x && headPosition.y === y)
-
-  if (snakeHittedItself) return true
-}
 
 function updateScore() {
   scorePlaceholderEL.classList.add("shake-number")
@@ -53,6 +39,25 @@ function snakeAteTheFood(headPosition) {
   }
 }
 
+function snakeShouldDie(headPosition) {
+  if (headPosition.x === -1 || headPosition.y === -1) {   // snake hitted the top or the left of the canvas
+    return true
+  }
+
+  else if (headPosition.x === gameMaxNumberOfColumns || headPosition.y === gameMaxNumberOfRows) {   // snake hitted the right or the bottom of the canvas
+    return true
+  }
+
+  const snakePositionsWithoutHead = snakePositions.slice(1)
+  const snakeHittedItself = snakePositionsWithoutHead.some(({x, y}) => headPosition.x === x && headPosition.y === y)
+
+  if (snakeHittedItself) return true
+}
+
+function paintSnakeTail(snakeTail) {
+  canvasContext.fillRect(snakeTail.x * pixelSize, snakeTail.y * pixelSize, pixelSize, pixelSize)
+}
+
 function moveSnake() {
   const snakeHead = {...snakePositions[0]}
   const snakeTail = snakePositions[snakePositions.length -1]
@@ -68,6 +73,7 @@ function moveSnake() {
   }
 
   if (snakeShouldDie(snakePositions[0])) {
+    paintSnakeTail(snakeTail)
     clearInterval(gameInterval)
     return
   }
