@@ -1,6 +1,8 @@
 const scorePlaceholderEL = document.querySelector('[data-js="score-placeholder"]')
 const canvasEL = document.querySelector('[data-js="canvas"]')
 const canvasContext = canvasEL.getContext("2d")
+const gameOveScreenEL = document.querySelector('[data-js="game-over-screen"]')
+const restartGameButtonEL = document.querySelector('[data-js="restart-game-button"]')
 const buttonsELs = document.querySelectorAll('[data-js="button"]')
 
 let snakePositions = [{x:3, y: 5}, {x:2, y: 5}, {x:1, y: 5}]
@@ -10,7 +12,7 @@ const pixelSize = 20
 
 let directionX = 1
 let directionY = 0
-const nextDirection = {x: 1, y: 0}    // this will be used to store the final snake position, preventing that it moves to the opposite direction immediatly
+let nextDirection = {x: 1, y: 0}    // this will be used to store the final snake position, preventing that it moves to the opposite direction immediatly
 
 let gameInterval = null
 let gameMaxNumberOfColumns = canvasEL.width / pixelSize
@@ -58,6 +60,14 @@ function paintSnakeTail(snakeTail) {
   canvasContext.fillRect(snakeTail.x * pixelSize, snakeTail.y * pixelSize, pixelSize, pixelSize)
 }
 
+function gameOver(snakeTail) {
+  paintSnakeTail(snakeTail)
+  clearInterval(gameInterval)
+
+  gameOveScreenEL.classList.add('canvas-wrapper__game-over--active')
+}
+
+
 function moveSnake() {
   const snakeHead = {...snakePositions[0]}
   const snakeTail = snakePositions[snakePositions.length -1]
@@ -73,8 +83,7 @@ function moveSnake() {
   }
 
   if (snakeShouldDie(snakePositions[0])) {
-    paintSnakeTail(snakeTail)
-    clearInterval(gameInterval)
+    gameOver(snakeTail)
     return
   }
 
@@ -129,12 +138,39 @@ function init() {
   moveSnake()
   generateFood()
 
-  gameInterval = setInterval(moveSnake, 80)
+  gameInterval = setInterval(moveSnake, 100)
+}
+
+function restart() {
+  // restart game variables
+  snakePositions = [{x:3, y: 5}, {x:2, y: 5}, {x:1, y: 5}]
+  foodPosition = {}
+  points = -1
+
+  directionX = 1
+  directionY = 0
+  nextDirection = {x: 1, y: 0}
+
+  gameOveScreenEL.classList.remove('canvas-wrapper__game-over--active')   // remove game over screen
+
+  canvasEL.classList.add('blink')
+
+  setTimeout(() => canvasEL.classList.remove('blink'), 150)
+
+  updateScore()
+
+  setTimeout(() => {
+    canvasContext.clearRect(0, 0, canvasEL.width, canvasEL.height)
+  
+    init()
+  }, 100)
 }
 
 init()
 
 
 document.addEventListener("keydown", setSnakeDirection)
+
+restartGameButtonEL.addEventListener("click", restart)
 
 buttonsELs.forEach(buttonEL => buttonEL.addEventListener('click', function() {setSnakeDirection(this.dataset)}))
