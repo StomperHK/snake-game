@@ -29,11 +29,11 @@ h1 {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  padding: 30px;
 }
 
 .canvas-wrapper {
-  margin: 30px 0px;
-  padding: 0px 30px;
+  margin: 0px 30px 30px 0px;
   width: fit-content;
   text-align: end;
 }
@@ -60,6 +60,8 @@ canvas {
 .controls {
   width: 230px;
   height: 230px;
+  background-color: var(--canvas-color);
+  border-radius: 6px;
   position: relative;
 }
 .controls button {
