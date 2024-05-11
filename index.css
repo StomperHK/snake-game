@@ -52,6 +52,7 @@ h1 {
 canvas {
   display: block;
   border: 3px solid var(--content-color);
+  width: 100%;
   border-radius: 6px 0px 6px 6px;
   background-color: var(--canvas-color);
 }
