@@ -25,20 +25,62 @@ h1 {
   text-align: center;
 }
 
+button {
+  background-color: transparent;
+}
+
 .flex-wrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  gap: 30px;
+
+  height: calc(90svh - 60px);
 
   padding: 30px;
 }
 
 .canvas-wrapper {
-  margin: 0px 30px 30px 0px;
   width: fit-content;
 
+  position: relative;
+
   text-align: end;
+
+  &__game-over {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: calc(100% - 37px);
+
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+
+    background-color: rgba(37, 40, 72, 0.8);
+    opacity: 0;
+    
+    pointer-events: none;
+
+    transition: opacity 150ms ease-in-out;
+
+    &--active {
+      opacity: 1;
+
+      pointer-events: all;
+    }
+
+    p {
+      margin-bottom: 10px;
+
+      font-weight: 700;
+      font-size: 22px;
+    }
+  }
 }
 
 .score-placeholder {
@@ -68,17 +110,42 @@ canvas {
   height: 230px;
 
   background-color: var(--canvas-color);
-  border-radius: 6px;
+  border-radius: 10px;
 
   position: relative;
 
   button {
-    border: 4px solid var(--content-color);
-
-    background-color: var(--content-color);
     border-radius: 6px;
 
     position: absolute;
+
+    &::after {
+      content: '';
+      width: 100%;
+      height: 100%;
+
+      position: absolute;
+      top: 10px;
+      left: 0px;
+      z-index: -1;
+
+      background-color: var(--content-color);
+      border-radius: 6px 6px 4px 4px;
+    }
+  }
+
+  div {
+    border: 4px solid var(--content-color);
+    padding: 10px 8px 2px 8px;
+
+    background-color: var(--canvas-color);
+    border-radius: 6px;
+
+    transition: 100ms transform ease-out;
+
+    &:active {
+      transform: translateY(10px);
+    }
   }
 
   &__top {
@@ -88,40 +155,31 @@ canvas {
   }
 
   &__right {
-    top: 50%;
+    top: calc(50% - 5px);
     right: 10px;
     transform: translateY(-50%);
   }
 
   &__bottom {
-    bottom: 15px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
   }
 
   &__left {
-    top: 50%;
+    top: calc(50% - 5px);
     left: 10px;
     transform: translateY(-50%);
-  }
-
-  div {
-    padding: 10px 8px 2px 8px;
-
-    background-color: var(--canvas-color);
-    border-radius: 6px;
-
-    transition: 100ms transform linear;
-
-    &:active {
-      transform: scale(0.92);
-    }
   }
 }
 
 
 .shake-number {
   animation: 80ms shake linear;
+}
+
+.blink {
+  animation: blink 200ms ease-out;
 }
 
 @keyframes shake {
@@ -135,5 +193,15 @@ canvas {
 
   to {
     transform: translate(0px, 0px);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
   }
 }
