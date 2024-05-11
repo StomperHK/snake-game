@@ -1,6 +1,7 @@
 const scorePlaceholderEL = document.querySelector('[data-js="score-placeholder"]')
 const canvasEL = document.querySelector('[data-js="canvas"]')
 const canvasContext = canvasEL.getContext("2d")
+const buttonsELs = document.querySelectorAll('[data-js="button"]')
 
 let snakePositions = [{x:3, y: 5}, {x:2, y: 5}, {x:1, y: 5}]
 let foodPosition = {}
@@ -20,7 +21,6 @@ function updateSnakeDirection() {
   directionX = nextDirection.x
   directionY = nextDirection.y
 }
-
 
 function updateScore() {
   scorePlaceholderEL.classList.add("shake-number")
@@ -104,7 +104,7 @@ function generateFood() {
   }
 }
 
-function changeSnakeDirection(event) {
+function setSnakeDirection(event) {
   const pressedKey = event.key
 
   if (pressedKey === "ArrowUp" && directionY === 0) {
@@ -135,4 +135,6 @@ function init() {
 init()
 
 
-document.addEventListener("keydown", changeSnakeDirection)
+document.addEventListener("keydown", setSnakeDirection)
+
+buttonsELs.forEach(buttonEL => buttonEL.addEventListener('click', function() {setSnakeDirection(this.dataset)}))
