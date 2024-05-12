@@ -25,8 +25,8 @@ let gameMaxNumberOfRows = canvasEL.height / pixelSize
 
 
 function updateSnakeDirection() {
-  directionX = nextDirection.x
-  directionY = nextDirection.y
+    directionX = nextDirection.x
+    directionY = nextDirection.y
 }
 
 function updateScore() {
@@ -66,6 +66,9 @@ function paintSnakeTail(snakeTail) {
 }
 
 function gameOver(snakeTail) {
+  let audio = new Audio('src/game-over.mp3')
+  audio.play()
+
   paintSnakeTail(snakeTail)
   clearInterval(gameInterval)
 
@@ -84,7 +87,11 @@ function moveSnake() {
 
   snakePositions.unshift({x: snakeHead.x + directionX, y: snakeHead.y + directionY})   // push snake 1 pixel forward
 
-  if (!snakeAteTheFood(snakePositions[0])) {
+  if (snakeAteTheFood(snakePositions[0])) {
+    let audio = new Audio('src/collect.mp3')
+    audio.play()
+  }
+  else {
     canvasContext.clearRect(snakeTail.x * pixelSize, snakeTail.y * pixelSize, pixelSize, pixelSize)   // remove snake tail from canvas
   
     snakePositions.pop()  // remove tail
@@ -176,6 +183,10 @@ function restart() {
 }
 
 function init() {
+  let audio = new Audio("src/start.mp3")
+  
+  audio.play()
+
   beginGameButtonEL.blur()    // removes focus from clicked buttons, this way pressing space won't trigger them blindly
   restartGameButtonEL.blur()
 
