@@ -70,7 +70,7 @@ button {
     
     pointer-events: none;
 
-    transition: opacity 150ms ease-in-out;
+    transition: opacity 150ms ease-out;
 
     &--active {
       opacity: 1;

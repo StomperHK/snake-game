@@ -59,7 +59,7 @@ button {
   background-color: rgba(37, 40, 72, 0.8);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 150ms ease-in-out;
+  transition: opacity 150ms ease-out;
 }
 .canvas-wrapper__begin-game--active, .canvas-wrapper__game-over--active {
   opacity: 1;
