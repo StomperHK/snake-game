@@ -20,6 +20,10 @@
         <span data-js="score-placeholder" class="score-placeholder">0</span>
         <canvas data-js="canvas" width="480" height="300" role="presentation"></canvas>
 
+        <div data-js="begin-game-screen" class="canvas-wrapper__begin-game canvas-wrapper__begin-game--active">
+          <button data-js="begin-game-button">COMEÇAR</button>
+        </div>
+
         <div data-js="game-over-screen" class="canvas-wrapper__game-over">
           <p>GAME OVER</p>
           <button data-js="restart-game-button">RECOMEÇAR</button>
@@ -48,6 +52,8 @@
           </div>
         </button>
       </div>
+
+      <p data-js="game-tip" class="game-tip game-tip--active">Aperte <span class="game-tip__key">espaço</span> para iniciar</p>
     </div>
 
     <script src="game.js" defer></script>
