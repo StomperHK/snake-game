@@ -112,12 +112,14 @@ function moveSnake() {
 
 function generateFood() {
   while (true) {
+    const headPosition = snakePositions[0]
     const randomPositionX = Math.floor(Math.random() * (gameMaxNumberOfColumns - 1))
     const randomPositionY = Math.floor(Math.random() * (gameMaxNumberOfRows - 1))
 
     const generatedPositionIsTaken = snakePositions.some(partPosition => partPosition.x === randomPositionX && partPosition.y === randomPositionY)
-
-    if (!generatedPositionIsTaken) {
+    const generatedPositionIsAppropriated = (headPosition.x - randomPositionX <= 5 && headPosition.x - randomPositionX >= -5) && (headPosition.y - randomPositionY <= 5 && headPosition.y - randomPositionY >= -5)    // food will only get generated on the 5 by 5 area near the head
+    
+    if (!generatedPositionIsTaken && generatedPositionIsAppropriated) {
       foodPosition = {x: randomPositionX, y: randomPositionY}
 
       canvasContext.fillStyle = "gray"
