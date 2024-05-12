@@ -158,32 +158,6 @@ function setSnakeDirection(event) {
   }
 }
 
-function restart() {
-  // restart game variables
-  snakePositions = [{x:3, y: 5}, {x:2, y: 5}, {x:1, y: 5}]
-  foodPosition = {}
-  points = -1
-  snakeIsDead = false
-  
-  directionX = 1
-  directionY = 0
-  nextDirection = {x: 1, y: 0}
-  
-  gameOveScreenEL.classList.remove('canvas-wrapper__game-over--active')   // remove game over screen
-  gameTip.classList.remove('game-tip--active')
-  canvasEL.classList.add('blink')
-  
-  setTimeout(() => canvasEL.classList.remove('blink'), 150)
-  
-  updateScore()
-  
-  setTimeout(() => {
-    canvasContext.clearRect(0, 0, canvasEL.width, canvasEL.height)
-    
-    init()
-  }, 100)
-}
-
 function init() {
   let audio = new Audio("src/start.mp3")
   
@@ -210,6 +184,39 @@ function startGame() {
   setTimeout(() => canvasEL.classList.remove('blink'), 150)
 }
 
+function restart() {
+  // restart game variables
+  snakePositions = [{x:3, y: 5}, {x:2, y: 5}, {x:1, y: 5}]
+  foodPosition = {}
+  points = -1
+  snakeIsDead = false
+  
+  directionX = 1
+  directionY = 0
+  nextDirection = {x: 1, y: 0}
+  
+  gameOveScreenEL.classList.remove('canvas-wrapper__game-over--active')   // remove game over screen
+  gameTip.classList.remove('game-tip--active')
+  canvasEL.classList.add('blink')
+  
+  setTimeout(() => canvasEL.classList.remove('blink'), 150)
+  
+  updateScore()
+  
+  setTimeout(() => {
+    canvasContext.clearRect(0, 0, canvasEL.width, canvasEL.height)
+    
+    init()
+  }, 100)
+}
+
+function clickMoveButton() {
+  let audio = new Audio("src/click.mp3")
+  audio.play()
+
+  setSnakeDirection(this.dataset)
+}
+
 
 document.addEventListener("keydown", setSnakeDirection)
 
@@ -217,4 +224,4 @@ beginGameButtonEL.addEventListener('click', startGame)
 
 restartGameButtonEL.addEventListener("click", restart)
 
-buttonsELs.forEach(buttonEL => buttonEL.addEventListener('click', function() {setSnakeDirection(this.dataset)}))
+buttonsELs.forEach(buttonEL => buttonEL.addEventListener('click', clickMoveButton))
