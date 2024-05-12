@@ -197,6 +197,8 @@ function init() {
 }
 
 function startGame() {
+  gameStarted = true
+
   beginGameScreenEL.classList.remove("canvas-wrapper__begin-game--active")
   canvasEL.classList.add('blink')
   gameTip.classList.remove('game-tip--active')
