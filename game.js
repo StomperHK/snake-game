@@ -1,20 +1,25 @@
 const scorePlaceholderEL = document.querySelector('[data-js="score-placeholder"]')
 const canvasEL = document.querySelector('[data-js="canvas"]')
 const canvasContext = canvasEL.getContext("2d")
+const beginGameScreenEL = document.querySelector('[data-js="begin-game-screen"]')
+const beginGameButtonEL = document.querySelector('[data-js="begin-game-button"]')
 const gameOveScreenEL = document.querySelector('[data-js="game-over-screen"]')
 const restartGameButtonEL = document.querySelector('[data-js="restart-game-button"]')
 const buttonsELs = document.querySelectorAll('[data-js="button"]')
+const gameTip = document.querySelector('[data-js="game-tip"]')
 
 let snakePositions = [{x:3, y: 5}, {x:2, y: 5}, {x:1, y: 5}]
 let foodPosition = {}
 let points = 0
-const pixelSize = 20
+let snakeIsDead = false
 
 let directionX = 1
 let directionY = 0
 let nextDirection = {x: 1, y: 0}    // this will be used to store the final snake position, preventing that it moves to the opposite direction immediatly
 
 let gameInterval = null
+let gameStarted = false
+const pixelSize = 20
 let gameMaxNumberOfColumns = canvasEL.width / pixelSize
 let gameMaxNumberOfRows = canvasEL.height / pixelSize
 
@@ -64,7 +69,10 @@ function gameOver(snakeTail) {
   paintSnakeTail(snakeTail)
   clearInterval(gameInterval)
 
+  snakeIsDead = true
+
   gameOveScreenEL.classList.add('canvas-wrapper__game-over--active')
+  gameTip.classList.add('game-tip--active')
 }
 
 
@@ -132,13 +140,13 @@ function setSnakeDirection(event) {
     nextDirection.x = 1
     nextDirection.y = 0
   }
-}
-
-function init() {
-  moveSnake()
-  generateFood()
-
-  gameInterval = setInterval(moveSnake, 100)
+  else if (pressedKey === " " && snakeIsDead) {
+    restart()
+  }
+  else if (pressedKey === " " && !gameStarted) {
+    gameStarted = true
+    startGame()
+  }
 }
 
 function restart() {
@@ -146,30 +154,51 @@ function restart() {
   snakePositions = [{x:3, y: 5}, {x:2, y: 5}, {x:1, y: 5}]
   foodPosition = {}
   points = -1
-
+  snakeIsDead = false
+  
   directionX = 1
   directionY = 0
   nextDirection = {x: 1, y: 0}
-
+  
   gameOveScreenEL.classList.remove('canvas-wrapper__game-over--active')   // remove game over screen
-
+  gameTip.classList.remove('game-tip--active')
   canvasEL.classList.add('blink')
-
+  
   setTimeout(() => canvasEL.classList.remove('blink'), 150)
-
+  
   updateScore()
-
+  
   setTimeout(() => {
     canvasContext.clearRect(0, 0, canvasEL.width, canvasEL.height)
-  
+    
     init()
   }, 100)
 }
 
-init()
+function init() {
+  beginGameButtonEL.blur()    // removes focus from clicked buttons, this way pressing space won't trigger them blindly
+  restartGameButtonEL.blur()
+
+  moveSnake()
+  generateFood()
+
+  gameInterval = setInterval(moveSnake, 100)
+}
+
+function startGame() {
+  beginGameScreenEL.classList.remove("canvas-wrapper__begin-game--active")
+  canvasEL.classList.add('blink')
+  gameTip.classList.remove('game-tip--active')
+
+  setTimeout(init, 85)
+
+  setTimeout(() => canvasEL.classList.remove('blink'), 150)
+}
 
 
 document.addEventListener("keydown", setSnakeDirection)
+
+beginGameButtonEL.addEventListener('click', startGame)
 
 restartGameButtonEL.addEventListener("click", restart)
 
