@@ -8,14 +8,14 @@ const restartGameButtonEL = document.querySelector('[data-js="restart-game-butto
 const buttonsELs = document.querySelectorAll('[data-js="button"]')
 const gameTip = document.querySelector('[data-js="game-tip"]')
 
-let snakePositions = [{x:3, y: 5}, {x:2, y: 5}, {x:1, y: 5}]
+let snakePositions = [{x: 3, y: 5}, {x: 2, y: 5}, {x: 1, y: 5}]
 let foodPosition = {}
 let points = 0
 let snakeIsDead = false
 
 let directionX = 1
 let directionY = 0
-let nextDirection = {x: 1, y: 0}    // this will be used to store the final snake position, preventing that it moves to the opposite direction immediatly
+let nextDirectionQueue = []    // this will be used to store the final snake position, preventing that it moves to the opposite direction immediatly
 
 let gameInterval = null
 let gameStarted = false
@@ -25,8 +25,14 @@ let gameMaxNumberOfRows = canvasEL.height / pixelSize
 
 
 function updateSnakeDirection() {
+  const nextDirection = nextDirectionQueue[0]
+
+  if (nextDirection) {
     directionX = nextDirection.x
     directionY = nextDirection.y
+
+    nextDirectionQueue.shift()
+  }
 }
 
 function updateScore() {
@@ -130,24 +136,52 @@ function generateFood() {
   }
 }
 
+function pushDirectionInQueue(directionObject, pressedKey) {
+  const directionQueueIsFull = nextDirectionQueue.length === 2
+  const directionQueueIsEmpty = !nextDirectionQueue.length
+
+  if (directionQueueIsFull) {
+    return
+  }
+
+  if (directionQueueIsEmpty) {
+    const validationWhenQueueIsEmpty = {    // compare to the current position
+      "ArrowUp": directionY === 0,
+      "ArrowLeft": directionX === 0,
+      "ArrowDown": directionY === 0,
+      "ArrowRight": directionX === 0
+    }
+
+    validationWhenQueueIsEmpty[pressedKey] && nextDirectionQueue.push(directionObject)
+    return
+  }
+  
+  if (!directionQueueIsFull && !directionQueueIsEmpty) {
+    const validationWhenQueueIsNotEmpty = {     // compare to the first object position in queue
+      "ArrowUp": nextDirectionQueue[0].y === 0,
+      "ArrowLeft": nextDirectionQueue[0].x === 0,
+      "ArrowDown": nextDirectionQueue[0].y === 0,
+      "ArrowRight": nextDirectionQueue[0].x === 0
+    }
+
+    validationWhenQueueIsNotEmpty[pressedKey] && nextDirectionQueue.push(directionObject)
+  }
+}
+
 function setSnakeDirection(event) {
   const pressedKey = event.key
 
-  if (pressedKey === "ArrowUp" && directionY === 0) {
-    nextDirection.x = 0
-    nextDirection.y = -1
+  if (pressedKey === "ArrowUp") {
+    pushDirectionInQueue({x: 0, y: -1}, pressedKey)
   }
-  else if (pressedKey === "ArrowLeft" && directionX === 0) {
-    nextDirection.x = -1
-    nextDirection.y = 0
+  else if (pressedKey === "ArrowLeft") {
+    pushDirectionInQueue({x: -1, y: 0}, pressedKey)
   }
-  else if (pressedKey === "ArrowDown" && directionY === 0) {
-    nextDirection.x = 0
-    nextDirection.y = 1
+  else if (pressedKey === "ArrowDown") {
+    pushDirectionInQueue({x: 0, y: 1}, pressedKey)
   }
-  else if (pressedKey === "ArrowRight" && directionX === 0) {
-    nextDirection.x = 1
-    nextDirection.y = 0
+  else if (pressedKey === "ArrowRight") {
+    pushDirectionInQueue({x: 1, y: 0}, pressedKey)
   }
   else if (pressedKey === " " && snakeIsDead) {
     restart()
@@ -211,10 +245,10 @@ function restart() {
 }
 
 function clickMoveButton() {
+  setSnakeDirection(this.dataset)
+
   let audio = new Audio("src/click.mp3")
   audio.play()
-
-  setSnakeDirection(this.dataset)
 }
 
 
