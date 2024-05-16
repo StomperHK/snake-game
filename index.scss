@@ -10,9 +10,7 @@
 
 :root {
   --bg-color: rgb(25, 18, 45);
-  --canvas-color: rgb(37, 40, 72);
-  --main-color: yellow;
-  --food-color: ;
+  --canvas-color: rgb(42, 46, 91);
   --content-color: white;
 }
 
@@ -20,6 +18,8 @@ body {
   background-color: var(--bg-color);
 
   user-select: none;
+
+  transition: opacity 250ms ease-out, transform 150ms ease-out;
 }
 
 h1 {
@@ -36,16 +36,34 @@ button {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 30px;
 
-  padding: 30px;
+  padding: 20px;
   min-height: calc(90vh - 63px);
   min-height: calc(100svh - 63px);
 
   position: relative;
 }
 
+.console {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 30px;
+  align-items: center;
+
+  padding: 16px 20px;
+
+  background-color: rgb(27, 27, 57);
+  border-radius: 6px;
+
+  @media (max-width: 876px) {
+    grid-template-columns: auto;
+    justify-items: center;
+  }
+}
+
 .canvas-wrapper {
+  justify-self: end;
+
   width: fit-content;
 
   position: relative;
@@ -59,13 +77,14 @@ button {
     align-items: center;
 
     width: 100%;
-    height: calc(100% - 37px);
+    height: calc(100% - 36px);
 
     position: absolute;
     bottom: 0px;
     left: 0px;
 
     background-color: rgba(37, 40, 72, 0.8);
+    border-radius: 4px 0px 4px 4px;
     opacity: 0;
     
     pointer-events: none;
@@ -193,7 +212,7 @@ canvas {
 
 .game-tip {
   position: absolute;
-  bottom: 50px;
+  bottom: 40px;
 
   font-variant-caps: small-caps;
   text-transform: uppercase;
@@ -234,6 +253,12 @@ canvas {
   }
 }
 
+
+.hide-game {
+  transform: scale(0.8);
+  opacity: 0;
+}
+
 .shake-number {
   animation: 80ms shake linear;
 }
@@ -242,7 +267,7 @@ canvas {
   animation: blink 200ms ease-out;
 }
 
-@media (max-width: 805px), (max-height: 600px) {
+@media (max-width: 876px), (max-height: 630px) {
   .game-tip {
     display: none;
   }
