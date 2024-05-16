@@ -19,9 +19,9 @@ let nextDirectionQueue = []    // this will be used to store the final snake pos
 
 let gameInterval = null
 let gameStarted = false
-const pixelSize = 20
-let gameMaxNumberOfColumns = canvasEL.width / pixelSize
-let gameMaxNumberOfRows = canvasEL.height / pixelSize
+const PIXEL_SIZE = 20
+let gameMaxNumberOfColumns = canvasEL.width / PIXEL_SIZE
+let gameMaxNumberOfRows = canvasEL.height / PIXEL_SIZE
 
 
 function updateSnakeDirection() {
@@ -41,8 +41,8 @@ function updateScore() {
   scorePlaceholderEL.textContent = ++points
 }
 
-function snakeAteTheFood(headPosition) {
-  if (headPosition.x === foodPosition.x && headPosition.y === foodPosition.y) {   // snake ate the food
+function snakeAteTheFood(snakeHead) {
+  if (snakeHead.x === foodPosition.x && snakeHead.y === foodPosition.y) {   // snake ate the food
     generateFood()
     updateScore()
     return true
@@ -52,23 +52,23 @@ function snakeAteTheFood(headPosition) {
   }
 }
 
-function snakeShouldDie(headPosition) {
-  if (headPosition.x === -1 || headPosition.y === -1) {   // snake hitted the top or the left of the canvas
+function snakeShouldDie(snakeHead) {
+  if (snakeHead.x === -1 || snakeHead.y === -1) {   // snake hitted the top or the left of the canvas
     return true
   }
 
-  else if (headPosition.x === gameMaxNumberOfColumns || headPosition.y === gameMaxNumberOfRows) {   // snake hitted the right or the bottom of the canvas
+  else if (snakeHead.x === gameMaxNumberOfColumns || snakeHead.y === gameMaxNumberOfRows) {   // snake hitted the right or the bottom of the canvas
     return true
   }
 
   const snakePositionsWithoutHead = snakePositions.slice(1)
-  const snakeHittedItself = snakePositionsWithoutHead.some(({x, y}) => headPosition.x === x && headPosition.y === y)
+  const snakeHittedItself = snakePositionsWithoutHead.some(({x, y}) => snakeHead.x === x && snakeHead.y === y)
 
   if (snakeHittedItself) return true
 }
 
 function paintSnakeTail(snakeTail) {
-  canvasContext.fillRect(snakeTail.x * pixelSize, snakeTail.y * pixelSize, pixelSize, pixelSize)
+  canvasContext.fillRect(snakeTail.x * PIXEL_SIZE, snakeTail.y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE)
 }
 
 function gameOver(snakeTail) {
@@ -84,6 +84,13 @@ function gameOver(snakeTail) {
   gameTip.classList.add('game-tip--active')
 }
 
+function paintSnake() {
+  snakePositions.forEach(({x, y}, index) => {    // paint whole snake
+    index ? canvasContext.fillStyle = "yellow" : canvasContext.fillStyle = "rgb(255, 215, 0)"
+    
+    canvasContext.fillRect(x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE)
+  })
+}
 
 function moveSnake() {
   const snakeHead = {...snakePositions[0]}
@@ -98,7 +105,7 @@ function moveSnake() {
     audio.play()
   }
   else {
-    canvasContext.clearRect(snakeTail.x * pixelSize, snakeTail.y * pixelSize, pixelSize, pixelSize)   // remove snake tail from canvas
+    canvasContext.clearRect(snakeTail.x * PIXEL_SIZE, snakeTail.y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE)   // remove snake tail from canvas
   
     snakePositions.pop()  // remove tail
   }
@@ -108,28 +115,23 @@ function moveSnake() {
     return
   }
 
-  snakePositions.forEach(({x, y}, index) => {    // paint whole snake
-    index ? canvasContext.fillStyle = "yellow" : canvasContext.fillStyle = "rgb(255, 215, 0)"
-    
-    canvasContext.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize)
-  })
-
+  paintSnake()
 }
 
 function generateFood() {
   while (true) {
-    const headPosition = snakePositions[0]
+    const snakeHead = snakePositions[0]
     const randomPositionX = Math.floor(Math.random() * (gameMaxNumberOfColumns - 1))
     const randomPositionY = Math.floor(Math.random() * (gameMaxNumberOfRows - 1))
 
     const generatedPositionIsTaken = snakePositions.some(partPosition => partPosition.x === randomPositionX && partPosition.y === randomPositionY)
-    const generatedPositionIsAppropriated = (headPosition.x - randomPositionX <= 5 && headPosition.x - randomPositionX >= -5) && (headPosition.y - randomPositionY <= 5 && headPosition.y - randomPositionY >= -5)    // food will only get generated on the 5 by 5 area near the head
+    const generatedPositionIsAppropriated = (snakeHead.x - randomPositionX <= 5 && snakeHead.x - randomPositionX >= -5) && (snakeHead.y - randomPositionY <= 5 && snakeHead.y - randomPositionY >= -5)    // food will only get generated on the 5 by 5 area near the head
     
     if (!generatedPositionIsTaken && generatedPositionIsAppropriated) {
       foodPosition = {x: randomPositionX, y: randomPositionY}
 
       canvasContext.fillStyle = "gray"
-      canvasContext.fillRect(randomPositionX * pixelSize, randomPositionY * pixelSize, pixelSize, pixelSize)
+      canvasContext.fillRect(randomPositionX * PIXEL_SIZE, randomPositionY * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE)
 
       break
     }
@@ -203,7 +205,7 @@ function init() {
   moveSnake()
   generateFood()
 
-  gameInterval = setInterval(moveSnake, 100)
+  gameInterval = setInterval(moveSnake, 110)
 }
 
 function startGame() {
@@ -251,6 +253,8 @@ function clickMoveButton() {
   audio.play()
 }
 
+
+window.addEventListener("load", () => setTimeout(() => document.body.classList.remove("hide-game"), 200))
 
 document.addEventListener("keydown", setSnakeDirection)
 
