@@ -12,49 +12,48 @@
     <link rel="stylesheet" href="./index.css">
   </head>
 
-  <body>
+  <body class="hide-game">
     <h1>SNAKE GAME</h1>
     
-    <div class="flex-wrapper">
-      <div class="canvas-wrapper">
-        <span data-js="score-placeholder" class="score-placeholder">0</span>
-        <canvas data-js="canvas" width="480" height="300" role="presentation"></canvas>
-
-        <div data-js="begin-game-screen" class="canvas-wrapper__begin-game canvas-wrapper__begin-game--active">
-          <button data-js="begin-game-button">COMEÇAR</button>
+    <main class="flex-wrapper">
+      <div class="console">
+        <div class="canvas-wrapper">
+          <span data-js="score-placeholder" class="score-placeholder">0</span>
+          <canvas data-js="canvas" width="480" height="300" role="presentation"></canvas>
+          <div data-js="begin-game-screen" class="canvas-wrapper__begin-game canvas-wrapper__begin-game--active">
+            <button data-js="begin-game-button">COMEÇAR</button>
+          </div>
+          <div data-js="game-over-screen" class="canvas-wrapper__game-over">
+            <p>GAME OVER</p>
+            <button data-js="restart-game-button">RECOMEÇAR</button>
+          </div>
         </div>
-
-        <div data-js="game-over-screen" class="canvas-wrapper__game-over">
-          <p>GAME OVER</p>
-          <button data-js="restart-game-button">RECOMEÇAR</button>
+        <div class="controls">
+          <button data-js="button" data-key="ArrowUp" class="controls__top">
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#fff" style="transform: rotate(-90deg) translate(2px, 1px);"><link xmlns="" type="text/css" id="dark-mode" rel="stylesheet" href=""/><style xmlns="" type="text/css" id="dark-mode-custom-style"/><path d="m309.67-81.33-61-61.67L587-481.33 248.67-819.67l61-61.66 400 400-400 400Z"/></svg>
+            </div>
+          </button>
+          <button data-js="button" data-key="ArrowRight" class="controls__right">
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#fff" style="transform: translate(2px, -2px);"><link xmlns="" type="text/css" id="dark-mode" rel="stylesheet" href=""/><style xmlns="" type="text/css" id="dark-mode-custom-style"/><path d="m309.67-81.33-61-61.67L587-481.33 248.67-819.67l61-61.66 400 400-400 400Z"/></svg>
+            </div>
+          </button>
+          <button data-js="button" data-key="ArrowDown" class="controls__bottom">
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#fff" style="transform: rotate(90deg) translateY(1px);"><link xmlns="" type="text/css" id="dark-mode" rel="stylesheet" href=""/><style xmlns="" type="text/css" id="dark-mode-custom-style"/><path d="m309.67-81.33-61-61.67L587-481.33 248.67-819.67l61-61.66 400 400-400 400Z"/></svg>
+            </div>
+          </button>
+          <button data-js="button" data-key="ArrowLeft" class="controls__left">
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#fff" style="transform: rotate(180deg) translate(2px, 2px);"><link xmlns="" type="text/css" id="dark-mode" rel="stylesheet" href=""/><style xmlns="" type="text/css" id="dark-mode-custom-style"/><path d="m309.67-81.33-61-61.67L587-481.33 248.67-819.67l61-61.66 400 400-400 400Z"/></svg>
+            </div>
+          </button>
         </div>
-      </div>
-
-      <div class="controls">
-        <button data-js="button" data-key="ArrowUp" class="controls__top">
-          <div>
-            <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#fff" style="transform: rotate(-90deg) translate(2px, 1px);"><link xmlns="" type="text/css" id="dark-mode" rel="stylesheet" href=""/><style xmlns="" type="text/css" id="dark-mode-custom-style"/><path d="m309.67-81.33-61-61.67L587-481.33 248.67-819.67l61-61.66 400 400-400 400Z"/></svg>
-          </div>
-        </button>
-        <button data-js="button" data-key="ArrowRight" class="controls__right">
-          <div>
-            <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#fff" style="transform: translate(2px, -2px);"><link xmlns="" type="text/css" id="dark-mode" rel="stylesheet" href=""/><style xmlns="" type="text/css" id="dark-mode-custom-style"/><path d="m309.67-81.33-61-61.67L587-481.33 248.67-819.67l61-61.66 400 400-400 400Z"/></svg>
-          </div>
-        </button>
-        <button data-js="button" data-key="ArrowDown" class="controls__bottom">
-          <div>
-            <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#fff" style="transform: rotate(90deg) translateY(1px);"><link xmlns="" type="text/css" id="dark-mode" rel="stylesheet" href=""/><style xmlns="" type="text/css" id="dark-mode-custom-style"/><path d="m309.67-81.33-61-61.67L587-481.33 248.67-819.67l61-61.66 400 400-400 400Z"/></svg>
-          </div>
-        </button>
-        <button data-js="button" data-key="ArrowLeft" class="controls__left">
-          <div>
-            <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#fff" style="transform: rotate(180deg) translate(2px, 2px);"><link xmlns="" type="text/css" id="dark-mode" rel="stylesheet" href=""/><style xmlns="" type="text/css" id="dark-mode-custom-style"/><path d="m309.67-81.33-61-61.67L587-481.33 248.67-819.67l61-61.66 400 400-400 400Z"/></svg>
-          </div>
-        </button>
       </div>
 
       <p data-js="game-tip" class="game-tip game-tip--active">Aperte <span class="game-tip__key">espaço</span> para iniciar</p>
-    </div>
+    </main>
 
     <script src="game.js" defer></script>
   </body>
