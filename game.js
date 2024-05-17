@@ -253,8 +253,15 @@ function clickMoveButton() {
   audio.play()
 }
 
+function handleOnLoad() {
+  setTimeout(() => document.body.classList.remove("hide-game"), 200)
+  const flexWrapperEL = document.querySelector('[data-js="flex-wrapper"]')
 
-window.addEventListener("load", () => setTimeout(() => document.body.classList.remove("hide-game"), 200))
+  flexWrapperEL.style = ""  // Google ad-service is reseting this element height
+}
+
+
+window.addEventListener("load", handleOnLoad)
 
 document.addEventListener("keydown", setSnakeDirection)
 
