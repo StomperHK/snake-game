@@ -17,6 +17,7 @@
 body {
   background-color: var(--bg-color);
 
+  -webkit-user-select: none;
   user-select: none;
 
   transition: opacity 250ms ease-out, transform 150ms ease-out;
@@ -64,6 +65,7 @@ button {
 .canvas-wrapper {
   justify-self: end;
 
+  width: -moz-fit-content;
   width: fit-content;
 
   position: relative;
