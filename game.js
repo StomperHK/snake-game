@@ -173,17 +173,17 @@ function pushDirectionInQueue(directionObject, pressedKey) {
 function setSnakeDirection(event) {
   const pressedKey = event.key
 
-  if (pressedKey === "ArrowUp") {
-    pushDirectionInQueue({x: 0, y: -1}, pressedKey)
+  if (["ArrowUp", 'w'].includes(pressedKey)) {
+    pushDirectionInQueue({x: 0, y: -1}, "ArrowUp")
   }
-  else if (pressedKey === "ArrowLeft") {
-    pushDirectionInQueue({x: -1, y: 0}, pressedKey)
+  else if (["ArrowLeft", 'a'].includes(pressedKey)) {
+    pushDirectionInQueue({x: -1, y: 0}, "ArrowLeft")
   }
-  else if (pressedKey === "ArrowDown") {
-    pushDirectionInQueue({x: 0, y: 1}, pressedKey)
+  else if (["ArrowDown", 's'].includes(pressedKey)) {
+    pushDirectionInQueue({x: 0, y: 1}, "ArrowDown")
   }
-  else if (pressedKey === "ArrowRight") {
-    pushDirectionInQueue({x: 1, y: 0}, pressedKey)
+  else if (["ArrowRight", 'd'].includes(pressedKey)) {
+    pushDirectionInQueue({x: 1, y: 0}, "ArrowRight")
   }
   else if (pressedKey === " " && snakeIsDead) {
     restart()
